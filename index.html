@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>影像校友会 · 调查问卷分析报告</title>
+<script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+.header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; opacity: 0.85; }
+
+/* Summary Cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.summary-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.summary-card .num {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+.summary-card .num.green { color: #27ae60; }
+.summary-card .num.blue { color: #2980b9; }
+.summary-card .num.orange { color: #e67e22; }
+.summary-card .label {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* Chart Card */
+.chart-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.chart-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+.chart-card .q-note {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 12px;
+}
+.chart-container { width: 100%; min-height: 380px; }
+
+/* Suggestions */
+.suggestions-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.suggestion-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+.suggestion-tag {
+    background: #eef2ff;
+    color: #4a6cf7;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+    font-size: 12px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 24px 16px; border-radius: 12px; }
+    .header h1 { font-size: 22px; }
+    .summary-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .summary-card { padding: 14px; }
+    .summary-card .num { font-size: 28px; }
+    .chart-card { padding: 16px; }
+    .chart-container { min-height: 300px; }
+}
+
+/* TOC */
+.toc {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.toc h3 { font-size: 16px; color: #2c3e50; margin-bottom: 10px; }
+.toc a {
+    display: block;
+    color: #3498db;
+    text-decoration: none;
+    padding: 4px 0;
+    font-size: 14px;
+}
+.toc a:hover { color: #2980b9; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+    <h1>📊 影像校友会 · 调查问卷分析报告</h1>
+    <div class="subtitle">问卷收集时间：2026年5月30日 — 6月1日 ｜ 共 335 份有效回复</div>
+</div>
+
+<!-- Summary -->
+<div class="summary-cards">
+    <div class="summary-card">
+        <div class="num">335</div>
+        <div class="label">有效回复数</div>
+    </div>
+    <div class="summary-card">
+        <div class="num green">80.0%</div>
+        <div class="label">小助手"很有作用"</div>
+    </div>
+    <div class="summary-card">
+        <div class="num green">89.0%</div>
+        <div class="label">"感觉很温暖"</div>
+    </div>
+    <div class="summary-card">
+        <div class="num blue">70.7%</div>
+        <div class="label">直播"很喜欢"</div>
+    </div>
+    <div class="summary-card">
+        <div class="num orange">39</div>
+        <div class="label">提出改进建议</div>
+    </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+    <h3>📑 报告目录</h3>
+    <a href="#q3">一、本月最受欢迎的生活主题</a>
+    <a href="#q4">二、赏析小助手点评是否有用</a>
+    <a href="#q5">三、对小助手每次点评的整体感受</a>
+    <a href="#q6">四、更希望点评在什么情况下出现</a>
+    <a href="#q7">五、每月主题直播的感受</a>
+    <a href="#q8">六、后续希望加入哪些主题课（多选）</a>
+    <a href="#q9">七、6月最感兴趣的主题（多选）</a>
+    <a href="#q10">八、改进建议汇总</a>
+    <a href="#timeline">九、问卷提交时间分布</a>
+</div>
+
+<!-- Charts -->
+<div class="chart-card" id="q3">
+    <h3>一、本月【玩手作】最受欢迎的生活主题</h3>
+    <div class="q-note">Q: 在本月「玩手作」的4个主题中，您最喜欢哪一周的生活主题？</div>
+    <div class="chart-container" id="chart0"></div>
+</div>
+
+<div class="chart-card" id="q4">
+    <h3>二、赏析小助手点评对你有用吗？</h3>
+    <div class="q-note">Q: 您认为目前校友群的赏析小助手点评，对你有用吗？</div>
+    <div class="chart-container" id="chart1"></div>
+</div>
+
+<div class="chart-card" id="q5">
+    <h3>三、对小助手每次点评的整体感受</h3>
+    <div class="q-note">Q: 对群里"每次发照片，小助手都会回复点评"这个做法，整体感觉如何？</div>
+    <div class="chart-container" id="chart2"></div>
+</div>
+
+<div class="chart-card" id="q6">
+    <h3>四、更希望点评在什么情况下出现</h3>
+    <div class="q-note">Q: 您更希望小助手的点评在什么情况下出现？</div>
+    <div class="chart-container" id="chart3"></div>
+</div>
+
+<div class="chart-card" id="q7">
+    <h3>五、每月主题直播的感受</h3>
+    <div class="q-note">Q: 对于每月校友会的主题直播，您感觉如何？（本月是珏媛老师的荷花户外直播）</div>
+    <div class="chart-container" id="chart4"></div>
+</div>
+
+<div class="chart-card" id="q8">
+    <h3>六、后续希望加入哪些主题课？（多选）</h3>
+    <div class="q-note">Q: 后续每月主题直播除了摄影，还有可能加入其他主题课，以下哪些主题内容是你们想要听的？</div>
+    <div class="chart-container" id="chart5"></div>
+</div>
+
+<div class="chart-card" id="q9">
+    <h3>七、6月最感兴趣的主题（多选）</h3>
+    <div class="q-note">Q: 在即将到来的6月，以下哪个主题你最感兴趣？</div>
+    <div class="chart-container" id="chart6"></div>
+</div>
+
+<div class="suggestions-section" id="q10">
+    <h3>八、改进建议汇总</h3>
+    <div class="q-note">共 39 位校友提出了具体建议（已排除"没有建议/无"等回复）</div>
+    <div class="chart-container" id="chart7" style="min-height:300px;"></div>
+    <h4 style="margin-top:20px; font-size:14px; color:#666;">📝 具体建议一览</h4>
+    <div class="suggestion-tags" id="suggestionTags"></div>
+</div>
+
+<div class="chart-card" id="timeline">
+    <h3>九、问卷提交时间分布</h3>
+    <div class="q-note">从 5/30 到 6/1 的提交趋势</div>
+    <div class="chart-container" id="chart8"></div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>报告生成时间：2026年06月30日 13:17</p>
+    <p>影像校友会 · 调查问卷分析</p>
+</div>
+
+</div>
+
+<script>
+const COLORS = ["#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de", "#3ba272", "#fc8452", "#9a60b4", "#ea7ccc", "#48b8d0"];
+const chartsData = [{"title": "Q3. 本月【玩手作】您最喜欢哪一周的生活主题？", "type": "pie", "labels": ["动手迎接夏天（镜头里的初夏）", "非遗手作（寻找身边的非遗）", "在大自然DIY（小满户外捡石头、拾落叶）", "兴趣手作（绘画/书法/下棋等）"], "values": [261, 32, 25, 17], "colors": ["#5470c6", "#91cc75", "#fac858", "#ee6666"]}, {"title": "Q4. 赏析小助手点评对你有用吗？", "type": "bar", "labels": ["很有作用，让我更愿意分享", "有点作用，感觉被关注", "没作用  (点评比较有讨好意味，没有批评只有迎合。)", "没作用  (评价不全面、不能明确指出不足，难以提升摄)", "没作用  (只有好评。)", "没作用  (AI迹象明显，评论千篇一律。)", "没作用  (“点错了，有作用)"], "values": [268, 62, 1, 1, 1, 1, 1], "color": "#5470c6"}, {"title": "Q5. 对小助手每次点评的感觉？", "type": "bar", "labels": ["很好，感觉被关注、很温暖", "还行，不反感", "有点频繁，偶尔觉得被打扰", "很烦，希望小助手少评或不评"], "values": [298, 32, 4, 1], "color": "#5470c6"}, {"title": "Q6. 希望小助手点评在什么情况下出现？", "type": "pie", "labels": ["维持现状，发图就评", "每天固定时段统一点评（比如下午）", "只有主动@小助手时才点评", "不需要点评，大家自己分享就行"], "values": [274, 41, 17, 3], "colors": ["#5470c6", "#91cc75", "#fac858", "#ee6666"]}, {"title": "Q7. 对每月校友会主题直播感觉如何？", "type": "bar", "labels": ["很喜欢，内容有趣，收获很大", "一般，有时间就看，没时间也不遗憾", "没看过 / 不知道有直播", "不太喜欢，风格或内容不太适合我  (我更喜欢古建)"], "values": [237, 59, 38, 1], "color": "#5470c6"}, {"title": "Q8. 后续希望加入哪些主题课？（多选）", "type": "hbar", "labels": ["饮食健康", "睡眠调理", "茶道", "太极养生", "唱歌", "朗诵", "书法", "减龄变美", "瑜伽", "其他  (摄影)", "其他  (拍莲花。)", "其他  (拍荷花)", "其他  (照相)", "其他  (我在加拿大生活，时差问题无法看直播)", "其他  (手工制作．)", "其他  (如何拍出瞬间的美，吸引眼球，产生想去拍的欲望。)", "其他  (都感兴趣，但时间有限。)", "其他  (拍照)", "其他  (有内涵的传统文化)", "其他  (无)", "其他  (人文，风景)", "其他  (短视频剪辑)", "其他  (太极养生)", "其他  (对摄影感兴趣)", "其他  (目前上课多，分身不出)", "其他  (摄影修图)", "其他  (介绍各地各时期的古建", ")", "其他  (增加更多的主题课)", "其他  (下半年有事要办，暂时没想法。)", "其他  (影视拍摄与制作)", "其他  (营养搭配，合理饮食。)", "其他  (这是影像摄影，有专题，要专一，不掺加)", "其他  (摄影，小短视频。)", "其他  (手机摄影)", "其他  (还是攝影)", "其他  (暂时没有)", "其他  (易学)", "其他  (户外运动)", "其他  (网球)", "其他  (风景，建筑人像拍摄，)"], "values": [175, 114, 107, 92, 89, 78, 65, 51, 40, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "colors": ["#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de", "#3ba272", "#fc8452", "#9a60b4", "#ea7ccc", "#48b8d0", "#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de", "#3ba272", "#fc8452", "#9a60b4", "#ea7ccc", "#48b8d0", "#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de", "#3ba272", "#fc8452", "#9a60b4", "#ea7ccc", "#48b8d0", "#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de", "#3ba272", "#fc8452", "#9a60b4", "#ea7ccc", "#48b8d0", "#5470c6"]}, {"title": "Q9. 6月你最感兴趣的主题？（多选）", "type": "hbar", "labels": ["初夏的夜（夜游、看月光，拍夜景/月亮）", "窗外风景（拍窗外的景色）", "天空日记（抬头拍云/日出日落）", "粽夏端午（包粽子、挂艾草、编五色绳，拍端午）", "年中回顾（翻相册，选出半年最难忘的照片）", "童真（回忆童年趣事，找回孩子气，绘画等，拍孩童笑容）", "写一首小诗（给你拍的照片配诗句，记录初夏）", "五感疗愈（用视觉、听觉、嗅觉、味觉、触觉体验夏天）"], "values": [197, 189, 172, 96, 93, 76, 61, 53], "colors": ["#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de", "#3ba272", "#fc8452", "#9a60b4"]}];
+const timeChartData = {"title": "问卷提交时间分布", "type": "line", "labels": ["05/30", "05/31", "06/01"], "values": [173, 154, 8]};
+const suggestionChartData = {"title": "改进建议分类", "type": "hbar", "labels": ["点评质量提升", "增加线下活动", "直播改进", "课程内容建议", "整体鼓励/满意"], "values": [39, 5, 4, 13, 10], "colors": ["#5470c6", "#91cc75", "#fac858", "#ee6666", "#73c0de"]};
+const allSuggestions = ["有建议  (非常好，期待更好！)", "有建议  (请讲一些创意思维在摄影中的应用，提高审美)", "有建议  (增加为每位校友提供以前学习过课程录像。)", "有建议  (三线城市能否也搞线下活动？)", "有建议  (对图片进行点评！开展一些有意义的活动！)", "有建议  (希望兴趣学堂越办越好)", "有建议  (希望以后多一些直播加餐实操课💞🌹🌹)", "有建议  (建议直播能回放)", "有建议  (每季都要有主题，季间有交叉，留下空间。)", "有建议  (加手工制作课动手工制作很重要哦‼️)", "有建议  (邀老师直播点评，分享摄影干货互助共促成长)", "有建议  (希望能长久坚持下去。)", "有建议  (建立各地分会群，更多的开展活动)", "有建议  (期待影片点评更详细。\n户外活动课，很好。)", "有建议  (建议对优秀作品的摄影3要素，取景角度进行)", "有建议  (能得到老师亲自点评指教就好了)", "有建议  (组织活动，相互交流！)", "有建议  (一月一个场景，大多数学友都没有场景感。)", "有建议  (多提批评意见)", "有建议  (希望给照片的不足之处提出拍摄和修图的建议)", "有建议  (进一步挖掘摄影摄像的原理和大师作品参考)", "有建议  (开展线下交流活动)", "有建议  (这些优秀照片，最好能加上介绍拍摄的方法 )", "有建议  (期待更有针对性的点评，进一步提高摄影水平)", "有建议  (图片点评可以采用视频方式)", "有建议  (都没发照片，也不知是谁把我拉进群有什么用)", "有建议  (老师点评作品时，尽量多提出不足和优化建议)", "有建议  (提高摄影技巧的系列知识的栏目可多点)", "有建议  (继续努力吧。)", "有建议  (期待学友把自己日常拍照发送群上多交流)", "有建议  (希望点评时直接指出不足的地方，不必太委婉)", "有建议  (现在做得挺好的，)", "有建议  (可以再活跃点！)", "有建议  (点评应侧重指出问题，并提出优化改进措施。)", "有建议  (感谢兴趣岛校友会各位老师。)", "有建议  (组织线下活动，包括聚会摄影)", "有建议  (专业的群就讨论本专业事，别象堂会似的太杂)", "有建议  (佳作欣赏、摄影眼知识讲座)", "有建议  (多讲一些拍摄的知识点，手机，相机专业模式)"];
+
+// Render suggestion tags
+const tagsContainer = document.getElementById('suggestionTags');
+allSuggestions.forEach(s => {
+    const tag = document.createElement('span');
+    tag.className = 'suggestion-tag';
+    tag.textContent = s;
+    tagsContainer.appendChild(tag);
+});
+
+// Render charts
+function px(fontSize) {
+    return window.innerWidth < 600 ? fontSize * 0.85 : fontSize;
+}
+
+chartsData.forEach((d, i) => {
+    const el = document.getElementById('chart' + i);
+    if (!el) return;
+
+    if (d.type === 'pie') {
+        const trace = {
+            labels: d.labels,
+            values: d.values,
+            type: 'pie',
+            textinfo: 'label+percent',
+            textposition: window.innerWidth < 600 ? 'outside' : 'inside',
+            marker: { colors: d.colors },
+            hovertemplate: '%{label}: %{value}人 (%{percent})<extra></extra>',
+            insidetextorientation: 'horizontal',
+            textfont: { size: px(12) }
+        };
+        const layout = {
+            showlegend: true,
+            legend: { font: { size: px(12) }, orientation: 'h', y: -0.2 },
+            margin: { t: 10, b: 10, l: 10, r: 10 },
+            height: window.innerWidth < 600 ? 350 : 420,
+        };
+        Plotly.newPlot(el, [trace], layout, { responsive: true, displayModeBar: false });
+    } else if (d.type === 'bar') {
+        const trace = {
+            x: d.labels,
+            y: d.values,
+            type: 'bar',
+            marker: { color: d.color },
+            text: d.values.map(v => v + '人'),
+            textposition: 'outside',
+            textfont: { size: px(13) },
+            hovertemplate: '%{x}: %{y}人<extra></extra>'
+        };
+        const layout = {
+            margin: { t: 10, b: 80, l: 10, r: 10 },
+            height: window.innerWidth < 600 ? 350 : 420,
+            xaxis: { tickfont: { size: px(11) }, tickangle: window.innerWidth < 600 ? -30 : 0 },
+            yaxis: { title: '人数', titlefont: { size: px(12) } }
+        };
+        Plotly.newPlot(el, [trace], layout, { responsive: true, displayModeBar: false });
+    } else if (d.type === 'hbar') {
+        // Reverse for horizontal bar so largest is on top
+        const labels = [...d.labels].reverse();
+        const values = [...d.values].reverse();
+        const colors = [...d.colors].reverse();
+        const trace = {
+            y: labels,
+            x: values,
+            type: 'bar',
+            orientation: 'h',
+            marker: { color: colors },
+            text: values.map(v => v + '人'),
+            textposition: 'outside',
+            textfont: { size: px(12) },
+            hovertemplate: '%{y}: %{x}人<extra></extra>'
+        };
+        const layout = {
+            margin: { t: 10, b: 10, l: 10, r: 50 },
+            height: Math.max(350, labels.length * 32),
+            xaxis: { title: '选择人次', titlefont: { size: px(12) } },
+            yaxis: { tickfont: { size: px(12) }, automargin: true }
+        };
+        Plotly.newPlot(el, [trace], layout, { responsive: true, displayModeBar: false });
+    }
+});
+
+// Render time chart
+const tcEl = document.getElementById('chart8');
+if (tcEl) {
+    const trace = {
+        x: timeChartData.labels,
+        y: timeChartData.values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: { color: '#3498db', size: 6 },
+        line: { color: '#3498db', width: 2 },
+        fill: 'tozeroy',
+        fillcolor: 'rgba(52,152,219,0.1)',
+        hovertemplate: '%{x}: %{y}份<extra></extra>'
+    };
+    const layout = {
+        margin: { t: 10, b: 40, l: 30, r: 10 },
+        height: 350,
+        xaxis: { title: '日期', tickfont: { size: px(11) } },
+        yaxis: { title: '提交数量', titlefont: { size: px(12) } }
+    };
+    Plotly.newPlot(tcEl, [trace], layout, { responsive: true, displayModeBar: false });
+}
+
+// Render suggestion chart
+const scEl = document.getElementById('chart7');
+if (scEl) {
+    const labels = [...suggestionChartData.labels].reverse();
+    const values = [...suggestionChartData.values].reverse();
+    const colors = [...suggestionChartData.colors].reverse();
+    const trace = {
+        y: labels,
+        x: values,
+        type: 'bar',
+        orientation: 'h',
+        marker: { color: colors },
+        text: values.map(v => v + '条'),
+        textposition: 'outside',
+        textfont: { size: px(12) },
+        hovertemplate: '%{y}: %{x}条建议<extra></extra>'
+    };
+    const layout = {
+        margin: { t: 10, b: 10, l: 10, r: 40 },
+        height: 280,
+        xaxis: { title: '建议条数' },
+        yaxis: { tickfont: { size: px(12) } }
+    };
+    Plotly.newPlot(scEl, [trace], layout, { responsive: true, displayModeBar: false });
+}
+
+// Responsive resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        for (let i = 0; i <= 8; i++) {
+            const el = document.getElementById('chart' + i);
+            if (el) Plotly.Plots.resize(el);
+        }
+    }, 250);
+});
+</script>
+
+</body>
+</html>
